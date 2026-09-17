@@ -35,12 +35,12 @@ export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <div className="announcement">Ümraniye & Ataşehir çevresine ev yapımı lezzetler <span>✦</span> Sipariş için bir gün önce yazın</div>
+      <div className="announcement">Ümraniye & Ataşehir çevresine ev yapımı lezzetler</div>
       <header className="site-header">
         <div className="container header-inner">
           <a className="brand" href="#ust" aria-label="Karenli Mutfak ana sayfa">
-            <Image src="/logo-small.jpeg" alt="Karenli Mutfak logosu" width={56} height={56} priority />
-            <span><strong>Karenli</strong><small>MUTFAK</small></span>
+            <div className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={56} height={56} priority /></div>
+            <span className="brand-name">Karenli Mutfak</span>
           </a>
           <nav aria-label="Ana menü"><a href="#urunler">Ürünlerimiz</a><a href="#hikayemiz">Hikâyemiz</a><a href="#sss">Sık sorulanlar</a></nav>
           <a className="header-order" href={whatsapp} target="_blank" rel="noopener noreferrer">Sipariş ver <ArrowIcon /></a>
@@ -67,8 +67,29 @@ export default function Home() {
 
         <section className="products-section container" id="urunler" aria-labelledby="products-title">
           <div className="section-heading"><div><span className="section-kicker">KARENLİ MUTFAK&apos;TAN</span><h2 id="products-title">Sofranıza <em>gelsin.</em></h2><p>Canınız ne çekerse, evde yapılmış gibi.</p></div><span className="section-count">{products.length} LEZZET</span></div>
-          <div className="category-nav" aria-label="Ürün kategorileri">{categories.map((category) => <a key={category} href={`#${categoryId(category)}`}>{category}</a>)}</div>
-          {categories.map((category) => <section className="category-section" id={categoryId(category)} key={category} aria-labelledby={`${categoryId(category)}-title`}><div className="category-heading"><h3 id={`${categoryId(category)}-title`}>{category}</h3><span>{products.filter((product) => product.category === category).length} ürün</span></div><div className="product-grid">{products.filter((product) => product.category === category).map((product) => <article className="product-card" key={product.name}><div className="product-photo"><Image src={`/fotograflar/${product.image}`} alt={product.name} fill sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, 25vw" /></div><div className="product-info"><h4>{product.name}</h4><p>{product.description}</p><div className="product-bottom"><span><strong>₺1.000</strong><small> / {product.unit}</small></span><a href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label={`${product.name} için WhatsApp'tan sipariş ver`}><ArrowIcon /></a></div></div></article>)}</div></section>)}
+          <nav className="category-nav" aria-label="Ürün kategorileri">
+            <span className="category-label">Kategoriler</span>
+            <div className="category-links">
+              {categories.map((category) => <a key={category} href={`#${categoryId(category)}`}>{category}</a>)}
+            </div>
+          </nav>
+          {categories.map((category) => (
+            <section className="category-section" id={categoryId(category)} key={category} aria-labelledby={`${categoryId(category)}-title`}>
+              <div className="category-heading"><h3 id={`${categoryId(category)}-title`}>{category}</h3><span>{products.filter((product) => product.category === category).length} ürün</span></div>
+              <div className="product-grid">
+                {products.filter((product) => product.category === category).map((product) => (
+                  <article className="product-card" key={product.name}>
+                    <div className="product-photo"><Image src={`/fotograflar/${product.image}`} alt={product.name} fill sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, 25vw" /></div>
+                    <div className="product-info">
+                      <h4>{product.name}</h4>
+                      <p>{product.description}</p>
+                      <div className="product-bottom"><span><strong>₺1.000</strong><small> / {product.unit}</small></span></div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
           <p className="price-note">Siparişiniz ve teslimat detayları için WhatsApp&apos;tan bize yazabilirsiniz.</p>
         </section>
 
