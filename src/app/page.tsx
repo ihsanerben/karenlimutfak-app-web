@@ -2,105 +2,110 @@ import Image from "next/image";
 import { categories, categoryId, products } from "@/data/products";
 
 const whatsapp = "https://wa.me/905305529337?text=Merhaba%2C%20sipari%C5%9F%20vermek%20istiyorum.";
+const price = 1000;
+const formattedPrice = new Intl.NumberFormat("tr-TR").format(price);
 
-function ArrowIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+function Arrow({ diagonal = false }: { diagonal?: boolean }) {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d={diagonal ? "M6 18 18 6M6 6h12v12" : "M4 12h16m-6-6 6 6-6 6"} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
 function WhatsAppIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3a13 13 0 0 0-11 20l-2 6 6-2A13 13 0 1 0 16 3Z"/><path d="M10.5 9.5c-.7.6-1 1.5-.8 2.6.7 4.4 5 8.7 9.3 9.5 1.2.2 2.1-.1 2.8-.9l.8-1.2-3.2-1.6-1.2 1.3c-2.1-.7-4-2.5-4.8-4.7l1.2-1.2-1.7-3.1-1.2.3Z"/></svg>;
+  return <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3a13 13 0 0 0-11 20l-2 6 6-2A13 13 0 1 0 16 3Z" /><path d="M10.5 9.5c-.7.6-1 1.5-.8 2.6.7 4.4 5 8.7 9.3 9.5 1.2.2 2.1-.1 2.8-.9l.8-1.2-3.2-1.6-1.2 1.3c-2.1-.7-4-2.5-4.8-4.7l1.2-1.2-1.7-3.1-1.2.3Z" /></svg>;
 }
+
+function Sprig() {
+  return <svg className="sprig" aria-hidden="true" viewBox="0 0 100 120" fill="none"><path d="M20 109C43 86 54 56 71 12" stroke="currentColor" strokeWidth="1.5" /><path d="M42 83C15 82 13 64 15 58c16 1 29 9 27 25ZM54 59C31 55 30 38 33 31c15 6 25 15 21 28ZM64 37C50 29 54 11 60 6c11 8 13 21 4 31ZM34 95c25 10 38-3 42-13-19-6-33-2-42 13ZM49 69c26 6 36-8 38-18-19-3-32 4-38 18ZM60 45c22 0 30-15 29-24-17 0-26 10-29 24Z" stroke="currentColor" strokeWidth="1.3" /></svg>;
+}
+
+const questions = [
+  { title: "Nasıl sipariş verebilirim?", answer: "Beğendiğiniz lezzetleri seçip WhatsApp üzerinden bize yazmanız yeterli. Ürün, miktar ve teslimat detaylarını birlikte netleştiriyoruz. Telefonla da ulaşabilirsiniz." },
+  { title: "Ne kadar önceden haber vermeliyim?", answer: "Siparişinizi en az bir gün önceden vermenizi rica ediyoruz. Böylece her şeyi sizin için taze taze hazırlayabiliyoruz." },
+  { title: "Teslimat ve elden alma nasıl oluyor?", answer: "Ümraniye ve Ataşehir çevresinde teslimat yapıyoruz; elden alma seçeneğimiz de var. Etkinlikler ve işletmeler için erken saatlerde teslimatı birlikte planlayabiliriz. Adres ve teslimat detaylarını sipariş sırasında konuşuyoruz." },
+  { title: "Toplu sipariş ve ödeme seçenekleri neler?", answer: "Davetler, etkinlikler ve işletmeler için toplu sipariş alıyoruz. Nakit, havale/EFT ve teslimatta ödeme seçeneklerini sipariş sırasında netleştirebiliriz." },
+];
 
 export default function Home() {
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Bakery",
-    name: "Karenli Mutfak",
-    url: "https://karenlimutfak.com",
-    image: "https://karenlimutfak.com/og-cropped.jpg",
+    "@context": "https://schema.org", "@type": "Bakery", name: "Karenli Mutfak",
+    url: "https://karenlimutfak.com", image: "https://karenlimutfak.com/og-cropped.jpg",
     telephone: "+90 530 552 93 37",
-    description: "Ümraniye ve Ataşehir çevresine ev yapımı poğaça, börek, tatlı ve kurabiye.",
-    areaServed: [{ "@type": "Place", name: "Ümraniye, İstanbul" }, { "@type": "Place", name: "Ataşehir, İstanbul" }],
+    sameAs: ["https://www.instagram.com/karenlimutfak", "https://www.tiktok.com/@karenlimutfak"],
+    description: "Ümraniye ve Ataşehir çevresine günlük, ev yapımı poğaça, börek, tatlı ve kurabiye.",
+    areaServed: ["Ümraniye, İstanbul", "Ataşehir, İstanbul"],
     hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Karenli Mutfak Ürünleri",
+      "@type": "OfferCatalog", name: "Ev yapımı lezzetler",
       itemListElement: products.map((product) => ({
-        "@type": "OfferCatalog",
-        name: product.name,
-        itemListElement: [{ "@type": "Offer", price: "1000", priceCurrency: "TRY", itemOffered: { "@type": "Product", name: product.name } }],
+        "@type": "Offer", price, priceCurrency: "TRY",
+        itemOffered: { "@type": "Product", name: product.name, description: product.description, image: `https://karenlimutfak.com/images/${product.image.replace(".jpeg", ".webp")}` },
       })),
     },
   };
-
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <div className="announcement">Ümraniye & Ataşehir çevresine ev yapımı lezzetler</div>
+      <a className="skip-link" href="#urunler">Ürünlere geç</a>
+      <div className="announcement"><span className="location-dot" /> İstanbul · Ümraniye & Ataşehir</div>
       <header className="site-header">
         <div className="container header-inner">
           <a className="brand" href="#ust" aria-label="Karenli Mutfak ana sayfa">
-            <div className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={56} height={56} priority /></div>
-            <span className="brand-name">Karenli Mutfak</span>
+            <span className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={56} height={56} priority /></span><span>Karenli Mutfak</span>
           </a>
-          <nav aria-label="Ana menü"><a href="#urunler">Ürünlerimiz</a><a href="#hikayemiz">Hikâyemiz</a><a href="#sss">Sık sorulanlar</a></nav>
-          <a className="header-order" href={whatsapp} target="_blank" rel="noopener noreferrer">Sipariş ver <ArrowIcon /></a>
+          <nav className="main-nav" aria-label="Ana menü"><a href="#urunler">Lezzetlerimiz</a><a href="#hikayemiz">Bizim mutfak</a><a href="#sss">Merak edilenler</a></nav>
+          <a className="header-contact" href={whatsapp} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /><span>Bize yazın</span><Arrow diagonal /></a>
         </div>
       </header>
-
       <main id="ust">
         <section className="hero container" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <div className="eyebrow"><span className="eyebrow-line"/>GÜNLÜK · EV YAPIMI · LEZZETLİ</div>
-            <h1 id="hero-title">Evden gelen<br/><em>en güzel</em> lezzetler.</h1>
-            <p>Mis gibi kokan poğaçalar, özenle hazırlanan börekler ve çay saatini güzelleştiren tatlılar. Hepsi Karenli Mutfak&apos;ta, sizin için.</p>
-            <div className="hero-actions"><a className="button button-primary" href="#urunler">Lezzetleri keşfet <ArrowIcon /></a><a className="text-link" href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp&apos;tan yazın</a></div>
-            <div className="hero-note"><span className="note-mark">✳</span><span>Ümraniye&apos;den sofranıza<br/><strong>sevgiyle hazırlanır.</strong></span></div>
+            <p className="eyebrow"><span /> EV YAPIMI. HER GÜN TAZE.</p>
+            <h1 id="hero-title">Biraz emek,<br />bir tutam sevgi.<br /><em>Bolca lezzet.</em></h1>
+            <p className="hero-description">Fırından çıkan o tanıdık koku, çayın yanına ayrılan son dilim… Evimizin lezzetlerini sizin sofranıza hazırlıyoruz.</p>
+            <a className="button" href="#urunler">Mutfağı keşfet <Arrow /></a>
+            <div className="hero-footnote"><span className="small-star">✳</span> Günlük hazırlanır, keyifle paylaşılır.</div>
           </div>
           <div className="hero-visual">
-            <div className="hero-image"><Image src="/fotograflar/su-boregi.jpeg" alt="Karenli Mutfak'ta hazırlanmış tepsi su böreği" fill priority sizes="(max-width: 800px) 100vw, 50vw" /></div>
-            <div className="hero-sticker"><span>✦</span> BİR TUTAM<br/>SEVGİYLE<br/>HAZIRLANDI</div>
-            <div className="hero-image-caption">Ev yapımı, tam kıvamında.</div>
+            <div className="hero-photo"><Image src="/images/pogaca-hero.webp" alt="Susamlı kaşarlı poğaçalarımız, fırın tepsisinde" fill priority sizes="(max-width: 700px) 90vw, 48vw" /></div>
+            <div className="hero-stamp"><span>EV YAPIMI</span><Sprig /><span>SEVGİYLE</span></div>
+            <figure className="hero-inset"><div><Image src="/images/ev-baklavasi.webp" alt="Tepsiyle hazırlanan ev baklavamız" fill sizes="(max-width: 700px) 36vw, 220px" /></div><figcaption>Tatlı bir molaya… <span>♡</span></figcaption></figure>
+            <span className="hero-caption">KARENLİ MUTFAK'TAN, SOFRANIZA.</span>
           </div>
         </section>
-
-        <section className="promise-strip" aria-label="Karenli Mutfak özellikleri"><div className="container promise-inner"><span>✳ &nbsp; Her gün taze hazırlanır</span><span>✳ &nbsp; Ev mutfağından çıkar</span><span>✳ &nbsp; Toplu sipariş alınır</span></div></section>
-
-        <section className="products-section container" id="urunler" aria-labelledby="products-title">
-          <div className="section-heading"><div><span className="section-kicker">KARENLİ MUTFAK&apos;TAN</span><h2 id="products-title">Sofranıza <em>gelsin.</em></h2><p>Canınız ne çekerse, evde yapılmış gibi.</p></div><span className="section-count">{products.length} LEZZET</span></div>
-          <nav className="category-nav" aria-label="Ürün kategorileri">
-            <span className="category-label">Kategoriler</span>
-            <div className="category-links">
-              {categories.map((category) => <a key={category} href={`#${categoryId(category)}`}>{category}</a>)}
-            </div>
-          </nav>
-          {categories.map((category) => (
-            <section className="category-section" id={categoryId(category)} key={category} aria-labelledby={`${categoryId(category)}-title`}>
-              <div className="category-heading"><h3 id={`${categoryId(category)}-title`}>{category}</h3><span>{products.filter((product) => product.category === category).length} ürün</span></div>
-              <div className="product-grid">
-                {products.filter((product) => product.category === category).map((product) => (
-                  <article className="product-card" key={product.name}>
-                    <div className="product-photo"><Image src={`/fotograflar/${product.image}`} alt={product.name} fill sizes="(max-width: 600px) 50vw, (max-width: 900px) 33vw, 25vw" /></div>
-                    <div className="product-info">
-                      <h4>{product.name}</h4>
-                      <p>{product.description}</p>
-                      <div className="product-bottom"><span><strong>₺1.000</strong><small> / {product.unit}</small></span></div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ))}
-          <p className="price-note">Siparişiniz ve teslimat detayları için WhatsApp&apos;tan bize yazabilirsiniz.</p>
+        <div className="values-strip"><div className="container"><span>Anne eli değmiş gibi</span><span aria-hidden="true">✳</span><span>Günlük & taze</span><span aria-hidden="true">✳</span><span>Paylaşmalık lezzetler</span></div></div>
+        <section className="catalog container" id="urunler" aria-labelledby="catalog-title">
+          <div className="section-heading"><div><p className="eyebrow">MUTFAĞIMIZDAN SEÇTİKLERİNİZ</p><h2 id="catalog-title">Sofrada yer <em>açın.</em></h2></div><p className="section-description">Kahvaltıya, çay saatine, kalabalık sofralara.<br />Canınızın çektiği bütün ev lezzetleri burada.</p></div>
+          <nav className="category-nav" aria-label="Ürün kategorileri">{categories.map((category, index) => <a key={category} href={`#${categoryId(category)}`}><span className="category-number">0{index + 1}</span>{category}</a>)}</nav>
+          <div className="product-grid">
+            {products.map((product, index) => {
+              const firstInCategory = index === 0 || products[index - 1].category !== product.category;
+              return <article className="product-card" key={product.name} id={firstInCategory ? categoryId(product.category) : undefined}>
+                <div className="product-photo"><Image src={`/images/${product.image.replace(".jpeg", ".webp")}`} alt={product.name} fill sizes="(max-width: 700px) 46vw, (max-width: 1000px) 45vw, 30vw" /><span className="product-category">{product.category}</span></div>
+                <div className="product-title"><h3>{product.name}</h3><span className="product-price">{formattedPrice} <span>TL</span></span></div>
+                <div className="product-details"><p>{product.description}</p><span className="product-unit">{product.unit === "kg" ? "Kilogram" : product.unit === "tepsi" ? "Tepsi" : "Adet"}</span></div>
+              </article>;
+            })}
+          </div>
+          <div className="catalog-note"><span>Bir davetiniz mi var?</span> Kalabalık sofralar için toplu sipariş de hazırlıyoruz. <a href="#siparis">Birlikte planlayalım <Arrow diagonal /></a></div>
         </section>
-
-        <section className="story-section" id="hikayemiz"><div className="container story-inner"><div className="story-image"><Image src="/fotograflar/koy-ekmegi.jpeg" alt="Karenli Mutfak ev yapımı köy ekmeği" fill sizes="(max-width: 800px) 100vw, 45vw" /></div><div className="story-copy"><span className="section-kicker">BİZİM MUTFAĞIN HİKÂYESİ</span><h2>Bir ev mutfağından,<br/><em>sizin sofranıza.</em></h2><p>Karenli Mutfak&apos;ta her lezzet ev sıcaklığıyla hazırlanır. Günlük yapılan poğaçalardan paylaşmalık tepsi böreklerine kadar sofranıza tazelik ve özen taşımayı seviyoruz.</p><p>Ümraniye ve Ataşehir çevresinde bireysel ve toplu siparişleriniz için bize yazabilirsiniz.</p><a className="button button-light" href={whatsapp} target="_blank" rel="noopener noreferrer">Bize WhatsApp&apos;tan yazın <ArrowIcon /></a></div></div></section>
-
-        <section className="faq-section container" id="sss"><div className="faq-intro"><span className="section-kicker">MERAK ETTİKLERİNİZ</span><h2>Sık sorulan<br/><em>sorular.</em></h2></div><div className="faq-list"><details><summary>Nasıl sipariş verebilirim?<span>+</span></summary><p>Ürünlerimizi inceleyip WhatsApp üzerinden bize yazmanız yeterli. Sipariş detaylarını birlikte netleştiriyoruz.</p></details><details><summary>Ne kadar önceden haber vermeliyim?<span>+</span></summary><p>Siparişiniz için en az bir gün önceden haber vermenizi rica ediyoruz.</p></details><details><summary>Teslimat ve elden alma mümkün mü?<span>+</span></summary><p>Evet. Ümraniye ve Ataşehir çevresinde teslimat veya elden alma seçeneklerini sipariş sırasında konuşabiliriz. Erken saatli etkinlik ve toplu siparişler için de bize yazabilirsiniz.</p></details><details><summary>Toplu sipariş verebilir miyim?<span>+</span></summary><p>Evet, etkinlikler ve işletmeler için toplu sipariş alıyoruz. Miktar ve teslimat saatini WhatsApp üzerinden planlayabiliriz.</p></details><details><summary>Ödeme seçenekleri nelerdir?<span>+</span></summary><p>Nakit ve havale/EFT ile ödeme yapabilirsiniz. Teslimatta ödeme detaylarını sipariş sırasında netleştirebiliriz.</p></details></div></section>
-
-        <section className="closing-section"><div className="container closing-inner"><span className="section-kicker">SOFRANIZDA YER AÇIN</span><h2>Bugün ne hazırlayalım?</h2><p>Sevdiğiniz lezzet için bize yazın, siparişinizi birlikte planlayalım.</p><a className="button button-primary" href={whatsapp} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /> WhatsApp&apos;tan sipariş ver</a></div></section>
+        <section className="story" id="hikayemiz" aria-labelledby="story-title"><div className="container story-inner">
+          <div className="story-heading"><Sprig /><p className="eyebrow">BİZİM MUTFAK</p><h2 id="story-title">Adı Karen,<br />tadı <em>evden.</em></h2></div>
+          <div className="story-copy"><p className="story-lead">Bazı lezzetler insanı hemen evinde hissettirir.</p><p>Bizim mutfağımızda da her şey bu hisle başlıyor. Sabahın poğaçasını, çayın kurabiyesini, birlikte oturulan sofraların böreğini özenle hazırlıyoruz.</p><p>Adını Karen&apos;den alan küçük mutfağımızdan; Ümraniye ve Ataşehir&apos;deki sofralara, günlük ve ev yapımı lezzetler ulaştırıyoruz.</p><span className="story-signature">Sevgiyle, Karenli Mutfak</span></div>
+        </div></section>
+        <section className="order-section container" id="siparis" aria-labelledby="order-title"><div className="order-panel">
+          <div className="order-intro"><p className="eyebrow">SOFRANIZ İÇİN HAZIRLAYALIM</p><h2 id="order-title">Siz seçin,<br /><em>biz hazırlayalım.</em></h2><p>İster bir tepsi börek, ister bütün bir davet sofrası. Siparişinizi birlikte planlayalım.</p><a className="button button-cream" href={whatsapp} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /> WhatsApp&apos;tan yazın <Arrow diagonal /></a><a className="phone-link" href="tel:+905305529337">veya arayın: 0530 552 93 37</a></div>
+          <ol className="order-steps"><li><span>01</span><div><h3>Canınızın çektiğini seçin</h3><p>Ürünleri inceleyin; miktarı ve günü bize yazın.</p></div></li><li><span>02</span><div><h3>Bir gün önce haber verin</h3><p>Her şeyi siparişiniz için günlük hazırlayalım.</p></div></li><li><span>03</span><div><h3>Sofrada buluşalım</h3><p>Ümraniye & Ataşehir çevresine teslim edelim ya da elden alın.</p></div></li></ol>
+        </div></section>
+        <section className="faq container" id="sss" aria-labelledby="faq-title"><div><p className="eyebrow">AKLINIZDA KALMASIN</p><h2 id="faq-title">Merak <em>edilenler.</em></h2><p>Başka bir sorunuz varsa<br />bir mesaj kadar yakınız.</p></div><div className="faq-list">{questions.map((question) => <details key={question.title}><summary>{question.title}<span className="faq-plus" aria-hidden="true" /></summary><p>{question.answer}</p></details>)}</div></section>
       </main>
-      <footer className="site-footer"><div className="container footer-inner"><div><strong>Karenli Mutfak</strong><p>Ev yapımı lezzetler, sevgiyle.</p></div><div className="footer-links"><a href="#urunler">Ürünler</a><a href="#hikayemiz">Hikâyemiz</a><a href="#sss">SSS</a></div><span>© {new Date().getFullYear()} Karenli Mutfak</span></div></footer>
-      <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp üzerinden sipariş için yazın"><WhatsAppIcon /></a>
+      <footer className="site-footer">
+        <div className="container footer-main">
+          <a className="brand footer-brand" href="#ust"><span className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={48} height={48} /></span><span>Karenli Mutfak</span></a>
+          <p>Evden gelen lezzetler.<br />Sofrada güzel anılar.</p>
+          <nav className="social-links" aria-label="Sosyal medya"><a href="https://www.instagram.com/karenlimutfak" target="_blank" rel="noopener noreferrer">Instagram <Arrow diagonal /></a><a href="https://www.tiktok.com/@karenlimutfak" target="_blank" rel="noopener noreferrer">TikTok <Arrow diagonal /></a></nav>
+          <a className="back-top" href="#ust">Başa dön <span>↑</span></a>
+        </div>
+        <div className="container footer-bottom"><span>© {new Date().getFullYear()} Karenli Mutfak</span><span>Ümraniye · Ataşehir · İstanbul</span></div>
+      </footer>
+      <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp üzerinden Karenli Mutfak'a yazın"><WhatsAppIcon /><span>Bize yazın</span></a>
     </>
   );
 }
