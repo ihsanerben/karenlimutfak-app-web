@@ -35,7 +35,7 @@ const questions = [
 export default function Home() {
   const structuredData = {
     "@context": "https://schema.org", "@type": "Bakery", name: "Karenli Mutfak",
-    url: "https://karenlimutfak.com", image: "https://karenlimutfak.com/og-cropped.jpg",
+    url: "https://karenlimutfak.com", image: "https://karenlimutfak.com/og-share.png",
     telephone: "+90 530 552 93 37",
     sameAs: ["https://www.instagram.com/karenlimutfak", "https://www.tiktok.com/@karenlimutfak"],
     description: "Ümraniye ve Ataşehir çevresine günlük, ev yapımı poğaça, börek, tatlı ve kurabiye.",
