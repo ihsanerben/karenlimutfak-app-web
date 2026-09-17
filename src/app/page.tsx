@@ -13,6 +13,14 @@ function WhatsAppIcon() {
   return <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 3a13 13 0 0 0-11 20l-2 6 6-2A13 13 0 1 0 16 3Z" /><path d="M10.5 9.5c-.7.6-1 1.5-.8 2.6.7 4.4 5 8.7 9.3 9.5 1.2.2 2.1-.1 2.8-.9l.8-1.2-3.2-1.6-1.2 1.3c-2.1-.7-4-2.5-4.8-4.7l1.2-1.2-1.7-3.1-1.2.3Z" /></svg>;
 }
 
+function InstagramIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>;
+}
+
+function TikTokIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3v11.8a4.2 4.2 0 1 1-3.2-4.1" /><path d="M14 3c.6 3.2 2.6 5 6 5.2" /></svg>;
+}
+
 function Sprig() {
   return <svg className="sprig" aria-hidden="true" viewBox="0 0 100 120" fill="none"><path d="M20 109C43 86 54 56 71 12" stroke="currentColor" strokeWidth="1.5" /><path d="M42 83C15 82 13 64 15 58c16 1 29 9 27 25ZM54 59C31 55 30 38 33 31c15 6 25 15 21 28ZM64 37C50 29 54 11 60 6c11 8 13 21 4 31ZM34 95c25 10 38-3 42-13-19-6-33-2-42 13ZM49 69c26 6 36-8 38-18-19-3-32 4-38 18ZM60 45c22 0 30-15 29-24-17 0-26 10-29 24Z" stroke="currentColor" strokeWidth="1.3" /></svg>;
 }
@@ -51,17 +59,21 @@ export default function Home() {
             <span className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={56} height={56} priority /></span><span>Karenli Mutfak</span>
           </a>
           <nav className="main-nav" aria-label="Ana menü"><a href="#urunler">Lezzetlerimiz</a><a href="#hikayemiz">Bizim mutfak</a><a href="#sss">Merak edilenler</a></nav>
-          <a className="header-contact" href={whatsapp} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /><span>Bize yazın</span><Arrow diagonal /></a>
+          <div className="header-actions">
+            <nav className="header-social" aria-label="Sosyal medya">
+              <a href="https://www.instagram.com/karenlimutfak" target="_blank" rel="noopener noreferrer" aria-label="Karenli Mutfak Instagram hesabı"><InstagramIcon /></a>
+              <a href="https://www.tiktok.com/@karenlimutfak" target="_blank" rel="noopener noreferrer" aria-label="Karenli Mutfak TikTok hesabı"><TikTokIcon /></a>
+            </nav>
+            <a className="header-contact" href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp üzerinden bize yazın"><WhatsAppIcon /><span>Bize yazın</span><Arrow diagonal /></a>
+          </div>
         </div>
       </header>
       <main id="ust">
         <section className="hero container" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <p className="eyebrow"><span /> EV YAPIMI. HER GÜN TAZE.</p>
             <h1 id="hero-title">Biraz emek,<br />bir tutam sevgi.<br /><em>Bolca lezzet.</em></h1>
             <p className="hero-description">Fırından çıkan o tanıdık koku, çayın yanına ayrılan son dilim… Evimizin lezzetlerini sizin sofranıza hazırlıyoruz.</p>
             <a className="button" href="#urunler">Mutfağı keşfet <Arrow /></a>
-            <div className="hero-footnote"><span className="small-star">✳</span> Günlük hazırlanır, keyifle paylaşılır.</div>
           </div>
           <div className="hero-visual">
             <div className="hero-photo"><Image src="/images/pogaca-hero.webp" alt="Susamlı kaşarlı poğaçalarımız, fırın tepsisinde" fill priority sizes="(max-width: 700px) 90vw, 48vw" /></div>
@@ -70,17 +82,22 @@ export default function Home() {
             <span className="hero-caption">KARENLİ MUTFAK'TAN, SOFRANIZA.</span>
           </div>
         </section>
-        <div className="values-strip"><div className="container"><span>Anne eli değmiş gibi</span><span aria-hidden="true">✳</span><span>Günlük & taze</span><span aria-hidden="true">✳</span><span>Paylaşmalık lezzetler</span></div></div>
         <section className="catalog container" id="urunler" aria-labelledby="catalog-title">
-          <div className="section-heading"><div><p className="eyebrow">MUTFAĞIMIZDAN SEÇTİKLERİNİZ</p><h2 id="catalog-title">Sofrada yer <em>açın.</em></h2></div><p className="section-description">Kahvaltıya, çay saatine, kalabalık sofralara.<br />Canınızın çektiği bütün ev lezzetleri burada.</p></div>
+          <div className="section-heading"><div><h2 id="catalog-title">Sofrada yer <em>açın.</em></h2></div><p className="section-description">Kahvaltıya, çay saatine, kalabalık sofralara.<br />Canınızın çektiği bütün ev lezzetleri burada.</p></div>
           <nav className="category-nav" aria-label="Ürün kategorileri">{categories.map((category, index) => <a key={category} href={`#${categoryId(category)}`}><span className="category-number">0{index + 1}</span>{category}</a>)}</nav>
           <div className="product-grid">
             {products.map((product, index) => {
               const firstInCategory = index === 0 || products[index - 1].category !== product.category;
+              const productWhatsApp = `https://wa.me/905305529337?text=${encodeURIComponent(`Merhaba, ${product.name} için sipariş vermek istiyorum.`)}`;
               return <article className="product-card" key={product.name} id={firstInCategory ? categoryId(product.category) : undefined}>
-                <div className="product-photo"><Image src={`/images/${product.image.replace(".jpeg", ".webp")}`} alt={product.name} fill sizes="(max-width: 700px) 46vw, (max-width: 1000px) 45vw, 30vw" /><span className="product-category">{product.category}</span></div>
-                <div className="product-title"><h3>{product.name}</h3><span className="product-price">{formattedPrice} <span>TL</span></span></div>
-                <div className="product-details"><p>{product.description}</p><span className="product-unit">{product.unit === "kg" ? "Kilogram" : product.unit === "tepsi" ? "Tepsi" : "Adet"}</span></div>
+                <a className="product-card-link" href={productWhatsApp} target="_blank" rel="noopener noreferrer">
+                  <div className="product-photo"><Image src={`/images/${product.image.replace(".jpeg", ".webp")}`} alt={product.name} fill sizes="(max-width: 700px) 46vw, (max-width: 1000px) 45vw, 30vw" /><span className="product-category">{product.category}</span></div>
+                  <div className="product-content">
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+                    <span className="product-price">{formattedPrice} TL/{product.unit}</span>
+                  </div>
+                </a>
               </article>;
             })}
           </div>
@@ -98,12 +115,13 @@ export default function Home() {
       </main>
       <footer className="site-footer">
         <div className="container footer-main">
-          <a className="brand footer-brand" href="#ust"><span className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={48} height={48} /></span><span>Karenli Mutfak</span></a>
-          <p>Evden gelen lezzetler.<br />Sofrada güzel anılar.</p>
-          <nav className="social-links" aria-label="Sosyal medya"><a href="https://www.instagram.com/karenlimutfak" target="_blank" rel="noopener noreferrer">Instagram <Arrow diagonal /></a><a href="https://www.tiktok.com/@karenlimutfak" target="_blank" rel="noopener noreferrer">TikTok <Arrow diagonal /></a></nav>
-          <a className="back-top" href="#ust">Başa dön <span>↑</span></a>
+          <a className="brand footer-brand" href="#ust" aria-label="Karenli Mutfak ana sayfa"><span className="brand-mark"><Image src="/logo-small.jpeg" alt="" width={48} height={48} /></span><span>Karenli Mutfak</span></a>
+          <nav className="social-links" aria-label="Sosyal medya ve WhatsApp">
+            <a href="https://www.instagram.com/karenlimutfak" target="_blank" rel="noopener noreferrer" aria-label="Karenli Mutfak Instagram hesabı"><InstagramIcon /></a>
+            <a href="https://www.tiktok.com/@karenlimutfak" target="_blank" rel="noopener noreferrer" aria-label="Karenli Mutfak TikTok hesabı"><TikTokIcon /></a>
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp üzerinden bize yazın"><WhatsAppIcon /></a>
+          </nav>
         </div>
-        <div className="container footer-bottom"><span>© {new Date().getFullYear()} Karenli Mutfak</span><span>Ümraniye · Ataşehir · İstanbul</span></div>
       </footer>
       <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp üzerinden Karenli Mutfak'a yazın"><WhatsAppIcon /><span>Bize yazın</span></a>
     </>
